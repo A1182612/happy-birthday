@@ -1,33 +1,12 @@
-// Reliable working image URLs (replace these URLs with local files like "images/meme1.jpg" if preferred)
+// Meme setup
 const memes = [
-  {
-    url: "images/pic1.webp",
-    caption: "Hi >w<"
-  },
-  {
-    url: "images/pic2.webp",
-    caption: "Happy Birthday Princess"
-  },
-  {
-    url: "images/pic3.webp",
-    caption: "Birthday Cake"
-  },
-  {
-   url: "images/pic4.webp",
-   caption: "For you >:3"
-  },
-  {
-   url: "images/pic5.webp",
-   caption: ""
-  },
-  {
-    url: "images/jumping.gif",
-    caption: "me for real for real!"
-  },
-  {
-   url: "images/pic7.gif",
-   caption: "yoooo"
-  }
+  { url: "images/pic1.webp", caption: "Hi >w<" },
+  { url: "images/pic2.webp", caption: "Happy Birthday Princess" },
+  { url: "images/pic3.webp", caption: "Birthday Cake" },
+  { url: "images/pic4.webp", caption: "For you >:3" },
+  { url: "images/pic5.webp", caption: "" },
+  { url: "images/jumping.gif", caption: "me for real for real!" },
+  { url: "images/pic7.gif", caption: "yoooo" }
 ];
 
 let memeIndex = 0;
@@ -52,15 +31,21 @@ function playPopSound() {
   osc.stop(ctx.currentTime + 0.08);
 }
 
-// Dynamic Target Date setup
+// Countdown setup with midnight surprise trigger
 let targetDate = new Date("2026-09-14T00:30:00").getTime();
+let celebrated = false;
 
 function updateCountdown() {
   const now = new Date().getTime();
   let diff = targetDate - now;
 
-  // Auto-switch to next year when timer reaches 0
+  // Fire surprise and auto-switch to next year when timer reaches 0
   if (diff <= 0) {
+    if (!celebrated) {
+      celebrated = true;
+      triggerMidnightSurprise();
+    }
+
     const updatedTarget = new Date(targetDate);
     updatedTarget.setFullYear(updatedTarget.getFullYear() + 1);
     targetDate = updatedTarget.getTime();
@@ -74,24 +59,37 @@ function updateCountdown() {
   document.getElementById("seconds").innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
 }
 
-// Initial call + interval setup
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// Function to launch confetti (reusable)
-function triggerConfetti() {
-  confetti({ 
-    particleCount: 100, 
-    spread: 80, 
-    origin: { y: 0.6 } 
-  });
+// Midnight zero-moment celebration effect
+function triggerMidnightSurprise() {
+  const overlay = document.getElementById("celebration-screen");
+  if (overlay) overlay.style.display = "flex";
+
+  triggerConfetti();
+  triggerEmojiRain();
+
+  setTimeout(() => {
+    if (overlay) overlay.style.display = "none";
+  }, 10000);
 }
 
-// Function to trigger emoji rain (reusable)
+// Reusable effects
+function triggerConfetti() {
+  if (typeof confetti === "function") {
+    confetti({ 
+      particleCount: 150, 
+      spread: 90, 
+      origin: { y: 0.6 } 
+    });
+  }
+}
+
 function triggerEmojiRain() {
   const emojis = ['🎂', '✨', '🎉', '💖', '👑', '🥳'];
   
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 25; i++) {
     const emojiEl = document.createElement('div');
     emojiEl.innerText = emojis[Math.floor(Math.random() * emojis.length)];
     emojiEl.style.position = 'fixed';
@@ -115,21 +113,17 @@ function triggerEmojiRain() {
   }
 }
 
-// Meme Cycle Handler (Now triggers sound + confetti + emoji rain all at once!)
+// Event Listeners
 document.getElementById("next-meme-btn").addEventListener("click", () => {
   playPopSound();
-  
-  // Trigger both effects instantly on click
   triggerConfetti();
   triggerEmojiRain();
 
-  // Cycle image and caption
   memeIndex = (memeIndex + 1) % memes.length;
   document.getElementById("meme-img").src = memes[memeIndex].url;
   document.getElementById("meme-caption").innerText = memes[memeIndex].caption;
 });
 
-// Standalone button listeners still work if clicked directly
 document.getElementById("confetti-btn").addEventListener("click", () => {
   playPopSound();
   triggerConfetti();
@@ -155,39 +149,4 @@ musicBtn.addEventListener("click", () => {
     musicBtn.innerText = "⏸️ Pause";
   }
   isPlaying = !isPlaying;
-});
-
-// Confetti Button
-document.getElementById("confetti-btn").addEventListener("click", () => {
-  playPopSound();
-  confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
-});
-
-// Emoji Rain Effect (pure DOM element animation fix)
-document.getElementById("emoji-rain-btn").addEventListener("click", () => {
-  playPopSound();
-  const emojis = ['🎂', '✨', '🎉', '💖', '👑', '🥳'];
-  
-  for (let i = 0; i < 25; i++) {
-    const emojiEl = document.createElement('div');
-    emojiEl.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    emojiEl.style.position = 'fixed';
-    emojiEl.style.top = '-50px';
-    emojiEl.style.left = Math.random() * 100 + 'vw';
-    emojiEl.style.fontSize = (Math.random() * 20 + 24) + 'px';
-    emojiEl.style.zIndex = '9999';
-    emojiEl.style.pointerEvents = 'none';
-    emojiEl.style.transition = 'transform 3s linear, opacity 3s linear';
-    
-    document.body.appendChild(emojiEl);
-
-    setTimeout(() => {
-      emojiEl.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
-      emojiEl.style.opacity = '0';
-    }, 50);
-
-    setTimeout(() => {
-      emojiEl.remove();
-    }, 3200);
-  }
 });
