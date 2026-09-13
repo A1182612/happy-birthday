@@ -32,7 +32,7 @@ function playPopSound() {
 }
 
 // Countdown setup with midnight surprise trigger
-let targetDate = new Date("2026-09-14T00:30:00").getTime();
+let targetDate = new Date("2026-09-14T00:10:00").getTime();
 let celebrated = false;
 
 function updateCountdown() {
