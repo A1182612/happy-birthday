@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bestie's Hype Birthday Station ✨</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Outfit:wght@400;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Particle overlay for effects -->
+  <canvas id="particle-canvas"></canvas>
+
+  <main class="card">
+    <div class="top-bar">
+      <!-- Sound Toggle -->
+      <button id="music-toggle" class="icon-btn" title="Toggle Music">🎵 Play Vibe</button>
+    </div>
+
+    <h1 class="title">Counting Down to <span class="highlight">Bestie's</span> Day! 🎂</h1>
+
+    <!-- Countdown Timer -->
+    <div class="countdown-container">
+      <div class="time-box"><span id="days">00</span><label>Days</label></div>
+      <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+      <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
+      <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+    </div>
+
+    <!-- Funny Meme / Photo Viewer -->
+    <div class="meme-viewer">
+      <div class="img-frame">
+        <img id="meme-img" src="https://picsum.photos/id/1025/600/400" alt="Funny Birthday Meme">
+      </div>
+      <p id="meme-caption" class="caption">"Waiting for the birthday cake like..."</p>
+      <button id="next-meme-btn" class="btn secondary-btn">🔀 Next Funny Pic</button>
+    </div>
+
+    <!-- Interactive Sound Effects & Effects Grid -->
+    <div class="effects-grid">
+      <button id="confetti-btn" class="btn">🎉 Confetti Cannon</button>
+      <button id="emoji-rain-btn" class="btn">✨ Emoji Rain</button>
+    </div>
+
+    <!-- Hidden Audio element for background jam -->
+    <audio id="bg-music" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=happy-pop-113264.mp3"></audio>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
